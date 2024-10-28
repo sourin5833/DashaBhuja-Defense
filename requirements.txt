@@ -1,8 +1,9 @@
+pip==24.3.1
 pandas==2.1.4
 numpy==1.24.3
 streamlit==1.30.0
 opencv-python-headless
-pillow==10.0.0
+pillow
 google-auth==2.35.0
 mediapipe
 scikit-learn==1.2.2
