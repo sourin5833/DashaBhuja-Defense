@@ -7,6 +7,8 @@ import mediapipe as mp
 import time
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, WebRtcMode, RTCConfiguration
 
+
+
 # Model loading
 load_model = pickle.load(open('YogaModel.pkl', 'rb'))
 
@@ -35,17 +37,21 @@ def feature_list(poseLandmarks, posename):
     ]
 
 # Streamlit layout
-st.set_page_config(layout="wide")
+st.set_page_config(
+    layout="wide",
+    page_title="Dashabhuja",
+    page_icon="🧘‍♀️",
+)
 
 # Sidebar
-st.sidebar.title('Yogibaba')
-app_mode = st.sidebar.selectbox('Select The Pose', ['Tree', 'Mountain', 'Warrior2'])
+st.sidebar.title('Logo_Image')
+app_mode = st.sidebar.selectbox('Select The Pose', ['Vrikshasana', 'Parvatasana', 'Virabhadrasana II'])
 
 # Display pose information and image
 pose_info = {
-    'Tree': ('Tree Pose', 'tree.jpg', 1),
-    'Mountain': ('Mountain Pose', 'mountain.jpg', 2),
-    'Warrior2': ('Warrior2 Pose', 'warrior2.jpg', 3)
+    'Vrikshasana': ('Pose Name - Vrikshasana', 'tree.jpg', 1),
+    'Parvatasana': ('Pose Name - Parvatasana', 'mountain.jpg', 2),
+    'Virabhadrasana II': ('Pose Name - Virabhadrasana II', 'warrior2.jpg', 3)
 }
 pose_name, pose_image, posename = pose_info[app_mode]
 st.title(f"{pose_name}")
@@ -74,7 +80,8 @@ class PoseDetector(VideoTransformerBase):
             if len(poseLandmarks) > 0:
                 data = feature_list(poseLandmarks, posename)
                 accuracy = int(round(load_model.predict(np.array(data).reshape(1, -1))[0], 0))
-                cv2.putText(img, f"Accuracy: {accuracy}%", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                cv2.putText(img, f"Accuracy: {accuracy}%", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+
 
                 # Draw landmarks
                 mp_drawing.draw_landmarks(img, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
@@ -90,10 +97,10 @@ rtc_configuration = RTCConfiguration(
 
 # Webcam Stream with streamlit-webrtc
 with col2:
-    st.write("Webcam Live Feed")
     webrtc_streamer(
         key="pose-detection",
         mode=WebRtcMode.SENDRECV,
         video_transformer_factory=PoseDetector,
         rtc_configuration=rtc_configuration
     )
+    
