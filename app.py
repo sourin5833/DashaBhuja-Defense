@@ -7,8 +7,6 @@ import mediapipe as mp
 import time
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, WebRtcMode, RTCConfiguration
 
-
-
 # Model loading
 load_model = pickle.load(open('YogaModel.pkl', 'rb'))
 
@@ -44,8 +42,39 @@ st.set_page_config(
 )
 
 # Sidebar
-st.sidebar.title('Logo_Image')
+st.sidebar.image("durga.jpg", use_column_width=True)
+st.sidebar.markdown(
+    """
+    <div style="text-align: center;">
+        <h1>Dashabuja</h1>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 app_mode = st.sidebar.selectbox('Select The Pose', ['Vrikshasana', 'Parvatasana', 'Virabhadrasana II'])
+
+# Sidebar modify
+# Add social media icons with hyperlinks in the same line
+st.sidebar.markdown("---")
+st.sidebar.caption(
+    "Built by [Team Dashabhuja](https://subhagittu.github.io/Animated-About-Us-Page). Like this? [Hire me!](mailto:sourin.mukherjee2580@gmail.com)"
+)
+facebook = "https://user-images.githubusercontent.com/74038190/235294010-ec412ef5-e3da-4efa-b1d4-0ab4d4638755.gif"
+instagram = "https://user-images.githubusercontent.com/74038190/235294013-a33e5c43-a01c-43f6-b44d-a406d8b4ab75.gif"
+linkedin = "https://user-images.githubusercontent.com/74038190/235294012-0a55e343-37ad-4b0f-924f-c8431d9d2483.gif"
+twitter = "https://user-images.githubusercontent.com/74038190/235294011-b8074c31-9097-4a65-a594-4151b58743a8.gif"
+
+st.sidebar.caption(
+    f"""
+    <div style='display: flex; align-items: center;'>
+        <a href='https://www.facebook.com/sourin.mukherjee833'><img src='{facebook}' style='width: 50px; height: 50px; margin-right: 25px;'></a>
+        <a href='https://www.instagram.com/i_am_faith_007/'><img src='{instagram}' style='width: 48px; height: 48px; margin-right: 25px;'></a>
+        <a href='https://www.linkedin.com/in/sourin-mukherjee2105833/'><img src='{linkedin}' style='width: 48px; height: 48px; margin-right: 25px;'></a>
+        <a href="https://x.com/i_am_faith_007"><img src='{twitter}' style='width: 48px; height: 48px; margin-right: 25px;'></a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Display pose information and image
 pose_info = {
@@ -82,7 +111,6 @@ class PoseDetector(VideoTransformerBase):
                 accuracy = int(round(load_model.predict(np.array(data).reshape(1, -1))[0], 0))
                 cv2.putText(img, f"Accuracy: {accuracy}%", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
-
                 # Draw landmarks
                 mp_drawing.draw_landmarks(img, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                           mp_drawing.DrawingSpec(color=(245, 117, 66), thickness=2, circle_radius=2),
@@ -103,4 +131,3 @@ with col2:
         video_transformer_factory=PoseDetector,
         rtc_configuration=rtc_configuration
     )
-    
