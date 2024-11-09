@@ -7,4 +7,4 @@ pillow
 google-auth==2.35.0
 mediapipe
 scikit-learn==1.2.2
-streamlit-webrtc
+streamlit-webrtc==0.20.0
