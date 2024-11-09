@@ -1,10 +1,10 @@
-pip==23.2.1
-pandas==2.1.4
-numpy==1.24.3
-streamlit==1.30.0
-opencv-python-headless
+pip
+pandas
+numpy
+streamlit
+opencv-python-contrib-headless
 pillow
-google-auth==2.35.0
+google-auth
 mediapipe
-scikit-learn==1.2.2
+scikit-learn
 streamlit-webrtc
